@@ -9,7 +9,6 @@ plugins {
 
 group = "com.appstore"
 version = "1.0-SNAPSHOT"
-val koin_version = "3.2.2"
 
 repositories {
     google()

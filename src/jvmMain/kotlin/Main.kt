@@ -6,14 +6,17 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollbarAdapter
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.mouse.MouseScrollUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
@@ -30,47 +33,112 @@ fun App() {
     var text by remember { mutableStateOf("Hello, Compose Kotlin!") }
 
     MaterialTheme {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-        ) {
-            TopAppBar(
-                title = { Text("首页") }
-            )
+        var select by remember { mutableStateOf(0) }
 
-            Column(
-                modifier = Modifier.padding(
-                    start = 5.dp,
-                    end = 5.dp,
-                    bottom = 5.dp
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = {
+                        Text("macOS应用")
+                    }
                 )
+            },
+            bottomBar = {
+                BottomNavigation {
+                    BottomNavigationItem(
+                        label = { Text("首页") },
+                        onClick = { select = 0 },
+                        selected = select == 0,
+                        icon = {
+                            Icon(
+                                Icons.Default.Home,
+                                "clickme",
+                                Modifier.size(ButtonDefaults.IconSize)
+                            )
+                        }
+                    )
+
+                    BottomNavigationItem(
+                        label = { Text("大厅") },
+                        onClick = { select = 1 },
+                        selected = select == 1,
+                        icon = {
+                            Icon(
+                                Icons.Default.Place,
+                                "clickme",
+                                Modifier.size(ButtonDefaults.IconSize)
+                            )
+                        }
+                    )
+
+                    BottomNavigationItem(
+                        label = { Text("我的") },
+                        onClick = { select = 2 },
+                        selected = select == 2,
+                        icon = {
+                            Icon(
+                                Icons.Default.AccountBox,
+                                "clickme",
+                                Modifier.size(ButtonDefaults.IconSize)
+                            )
+                        }
+                    )
+                }
+            }
+        ) {
+            Column(
+                modifier = Modifier.padding(paddingValues = it).fillMaxSize()
             ) {
-                Button(onClick = {
-                    text = "Hello, macOS!"
-                }) {
-                    Text(text)
+                //simulation page switch
+                when(select){
+                    0->{
+                        Button(onClick = {
+                            text = "Hello, macOS! Panel 0!"
+                        }) {
+                            text = "0"
+                            Text(text)
+                        }
+                    }
+                    1->{
+                        Button(onClick = {
+                            text = "Hello, macOS Panel 1!"
+                        }) {
+                            text = "1"
+                            Text(text)
+                        }
+                    }
+                    else->{
+                        Button(onClick = {
+                            text = "Hello, macOS! expect 0,1!"
+                        }) {
+                            text = "2"
+                            Text(text)
+                        }
+                    }
                 }
 
-                Box(
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    val state = rememberLazyListState()
 
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                ) {
+
+
+                    val state = rememberLazyListState()
                     LazyColumn(
                         modifier = Modifier.fillMaxSize(),
                         state = state,
                     ) {
                         items(1000) {
-                            Box(
-                                Modifier.fillMaxWidth()
+                            Card(
+                                elevation = 3.dp,
+                                modifier = Modifier.fillParentMaxWidth()
+                                    .padding(top = 10.dp, start = 10.dp, end = 10.dp)
                                     .height(65.dp)
-                                    .background(Color(180, 180, 180)),
-                                contentAlignment = Alignment.Center
                             ) {
                                 Text("${it + 1} item was created")
                             }
-
-                            if (it != 999)
-                                Spacer(modifier = Modifier.height(5.dp))
+                            if (it == 999)
+                                Spacer(modifier = Modifier.height(10.dp))
                         }
                     }
 
@@ -98,6 +166,7 @@ fun main() = application {
     }
 
     TestCoroutine().toString()
+
     val client = OkHttpClient.Builder()
         .build()
 
