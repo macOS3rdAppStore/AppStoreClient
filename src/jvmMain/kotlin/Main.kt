@@ -1,4 +1,5 @@
 // Copyright 2000-2021 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
+import View.MainPage
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.VerticalScrollbar
 import androidx.compose.foundation.background
@@ -87,19 +88,17 @@ fun App() {
             }
         ) {
             Column(
-                modifier = Modifier.padding(paddingValues = it).fillMaxSize()
+                modifier = Modifier
+                    .padding(paddingValues = it)
+                    .fillMaxSize()
             ) {
                 //simulation page switch
-                when(select){
-                    0->{
-                        Button(onClick = {
-                            text = "Hello, macOS! Panel 0!"
-                        }) {
-                            text = "0"
-                            Text(text)
-                        }
+                when (select) {
+                    0 -> {
+                        MainPage()
                     }
-                    1->{
+
+                    1 -> {
                         Button(onClick = {
                             text = "Hello, macOS Panel 1!"
                         }) {
@@ -107,7 +106,8 @@ fun App() {
                             Text(text)
                         }
                     }
-                    else->{
+
+                    else -> {
                         Button(onClick = {
                             text = "Hello, macOS! expect 0,1!"
                         }) {
@@ -115,40 +115,6 @@ fun App() {
                             Text(text)
                         }
                     }
-                }
-
-
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                ) {
-
-
-                    val state = rememberLazyListState()
-                    LazyColumn(
-                        modifier = Modifier.fillMaxSize(),
-                        state = state,
-                    ) {
-                        items(1000) {
-                            Card(
-                                elevation = 3.dp,
-                                modifier = Modifier.fillParentMaxWidth()
-                                    .padding(top = 10.dp, start = 10.dp, end = 10.dp)
-                                    .height(65.dp)
-                            ) {
-                                Text("${it + 1} item was created")
-                            }
-                            if (it == 999)
-                                Spacer(modifier = Modifier.height(10.dp))
-                        }
-                    }
-
-                    VerticalScrollbar(
-                        modifier = Modifier.align(Alignment.CenterEnd)
-                            .fillMaxHeight(),
-                        adapter = rememberScrollbarAdapter(
-                            scrollState = state
-                        )
-                    )
                 }
             }
         }
