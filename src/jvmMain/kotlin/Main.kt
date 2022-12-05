@@ -1,23 +1,18 @@
 // Copyright 2000-2021 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
+import DataBase.SqliteServer
 import View.MainPage
 import androidx.compose.desktop.ui.tooling.preview.Preview
-import androidx.compose.foundation.VerticalScrollbar
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollbarAdapter
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Place
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.blur
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.mouse.MouseScrollUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
@@ -27,6 +22,7 @@ import okhttp3.OkHttpClient
 import org.jsoup.Jsoup
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
+import org.koin.java.KoinJavaComponent.inject
 
 @Composable
 @Preview
@@ -128,10 +124,18 @@ fun main() = application {
                 val qiuchen = "123123"
                 qiuchen//注入到本地依赖
             }
+
+            single { SqliteServer() }
+            single { SystemInitialization() }
         })
     }
 
-    TestCoroutine().toString()
+    val systemInitialization: SystemInitialization by inject(SystemInitialization::class.java)
+
+    systemInitialization.apply {
+        initializationSystem()
+        toString()
+    }
 
     val client = OkHttpClient.Builder()
         .build()

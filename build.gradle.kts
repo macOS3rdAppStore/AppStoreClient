@@ -16,6 +16,7 @@ repositories {
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
 }
 
+val exposedVersion: String by project
 dependencies {
     commonMainImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
     commonMainImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.4")
@@ -27,6 +28,13 @@ dependencies {
 
     // Koin Core features
     commonMainImplementation("io.insert-koin:koin-core:3.2.2")
+
+    //加入sqlite数据库
+    commonMainImplementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
+    commonMainImplementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
+    commonMainImplementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
+    commonMainImplementation("org.xerial:sqlite-jdbc:3.40.0.0")
+
 }
 
 kotlin {

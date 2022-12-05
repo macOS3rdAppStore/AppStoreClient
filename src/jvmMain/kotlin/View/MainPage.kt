@@ -42,8 +42,9 @@ fun MainPage() {
 
     val coroutine = rememberCoroutineScope()
 
-
     model.myState.onEach {
+        //窗口每次被加载就会重新获取一遍数据 不知道为什么 但是符合我的需求
+        println("数据更新了")
         txt = it
     }.launchIn(coroutine)
 

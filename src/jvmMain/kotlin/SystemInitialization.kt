@@ -1,9 +1,14 @@
+import DataBase.SqliteServer
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import kotlin.coroutines.CoroutineContext
 
-class TestCoroutine : KoinComponent {
+class SystemInitialization : KoinComponent {
     val aa: String by inject()
+    val sqliteServer: SqliteServer by inject()
+
+    fun initializationSystem() {
+        sqliteServer.init()
+    }
 
     override fun toString(): String {
         println(aa)
